@@ -1,0 +1,41 @@
+#! /bin/tcsh -f
+
+# This the main NNAlign-2.0 script. It only acts as the frontend to the
+# software proper, a compiled binary.
+# 
+# VERSION:	2017 March 16
+# 
+
+###############################################################################
+#               GENERAL SETTINGS: CUSTOMIZE TO YOUR SITE
+###############################################################################
+
+# full path to the NNAlign 2.0 directory (mandatory)
+setenv	NNALIGN	"/scripts/nnalign-2.0"
+
+# set paths to Seq2Logo and/or R to generate graphics (optional)
+set Seq2Logo = ""
+set Rpath = "" 
+
+###############################################################################
+#               NOTHING SHOULD NEED CHANGING BELOW THIS LINE!
+###############################################################################
+
+# main ========================================================================
+if ( -x $NNALIGN/nnalign-2.0d.SA.pl ) then
+    if ("$Seq2Logo" != "" && "$Rpath" != "") then
+   	    $NNALIGN/nnalign-2.0d.SA.pl -R $Rpath -Logo $Seq2Logo $*
+   	else
+   		if ("$Seq2Logo" != "") then
+   			 $NNALIGN/nnalign-2.0d.SA.pl -Logo $Seq2Logo $*
+   		else if ("$Rpath" != "") then
+   			 $NNALIGN/nnalign-2.0d.SA.pl -R $Rpath $*
+   		else
+   			$NNALIGN/nnalign-2.0d.SA.pl $*
+   		endif
+   	endif
+else
+   echo $NNALIGN/nnalign-2.0d.SA.pl not found
+endif
+
+# end of script ===============================================================
